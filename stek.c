@@ -6,17 +6,17 @@
 typedef struct Stek		//структура Стек
 {
 	char *name;			//поле Имя
-	int number;			//поле Телефон
+	char *number;		//поле Телефон
 	struct Stek *next;	//указатель на структуру типа Stek
 } Stek;					//переменная структуры Stek
 
 //добавление элемента
-void push(Stek **head, char *inName, int *inNumber)
+void push(Stek **head, char *inName, char *inNumber)
 {
 	printf("Push\n");
 	Stek *tmp = (Stek*) malloc(sizeof(Stek));
 	tmp->name = inName;
-	tmp->number = *inNumber;
+	tmp->number = inNumber;
 	tmp->next = *head;
 	*head = tmp;
 	printf("Push+\n");
@@ -34,9 +34,9 @@ int pop(Stek **head)
 	}
 	cur = *head;
 	*head = (*head)->next;
-	printf("%s %d\n\r", cur->name, cur->number);
+	printf("%s %s\n\r", &(cur->name), &(cur->number));
 	free(cur);
-	printf("Vernuli\n\r");
+	printf("Вывели последний элемент из стека");
 	return 0;
 }
 
@@ -46,7 +46,7 @@ void printLinkedList(Stek **head)
 	Stek *cur;
 	while (*head != NULL)
 	{
-		printf("\n%s %d\n", (*head)->name, (*head)->number);
+		printf("\n%s %s\n", &((*head)->name), &((*head)->number));
 		cur = *head;
 		*head = (*head)->next;
 		free(cur);
@@ -67,16 +67,17 @@ void printLinkedList(Stek **head)
 void main() {
 	Stek *stekptr = NULL;
 	/*stekptr = (Stek*) malloc(sizeof(struct Stek));*/
-	printf("Введите команду push, pop или list");
 	char command[5];
-	char inName[50];
-	unsigned inNumber[12];
+	char *inName = (char *) malloc(sizeof(inName));
+	char *inNumber = (char *) malloc(sizeof(inNumber));
 	while (1)
 	{
+		printf("Введите команду push/pop или list\n");
 		scanf("%s", command);
 		if (command[1] == 'u')
 		{
-			scanf("%s %d", inName, &inNumber);
+			printf("Введите через проблем имя и номер");
+			scanf("%s %s", &inName, &inNumber);
 			push(&stekptr, inName, inNumber);
 		}
 		else if(command[1] == 'o')
