@@ -1,157 +1,118 @@
-#include "stdio.h"
-#include "stdlib.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <locale.h>
 
-typedef struct ringListNode {
-        struct ringListNode *prev;
-        char data[64];
-        struct ringListNode *next;
-} Node;
 
-int showMenu(int *menuChoosedItemPtr) {
-        printf("\n\rChoose action:\n\r");
-        printf("1. Push current element\n\r");
-        printf("2. Pop current element\n\r");
-        printf("3. List&check length\n\r");
-        printf("4. Move to previous\n\r");
-        printf("5. Move to next\n\r");
-        printf("6. Exit\n\n\r>>");
-        scanf("%d", menuChoosedItemPtr);
-        return 0;
+//создание структуры
+typedef struct Stek		//структура Стек
+{
+	char* info;			//поле информации
+	struct Stek* next;	//указатель на следующую структуру типа Stek
+	struct Stek* prev;	//указатель на пердыдущую структуру типа Stek
+} Stek;					//переменная структуры Stek
+
+//добавление элемента
+void push(Stek** head, char* inInfo)
+{
+	Stek* tmp = (Stek*)malloc(sizeof(Stek));
+    if (*head == NULL)
+    {
+        tmp->info = inInfo;
+        tmp->next = tmp;
+        tmp->prev = tmp;
+        *head = tmp;
+    }
+    else
+    {
+        tmp->info = inInfo;
+        tmp->prev = *head;
+    	tmp->next = (*head)->next;
+    	(*head)->next = tmp;
+    	(tmp->next)->prev = tmp;
+    	*head = tmp;
+    }
 }
 
-int push(Node **curPtr) {
-        Node *newNode = (Node*) malloc(sizeof(Node));
-        printf("Input data for push in new element of the list:\n\r>>");
-        scanf("%63s", newNode->data);
-        if (*curPtr == NULL){
-                newNode->prev = newNode;
-                newNode->next = newNode;
-                *curPtr = newNode;
-        }else{
-                newNode->prev = *curPtr;
-                newNode->next = (*curPtr)->next;
-                (*curPtr)->next = newNode;
-                (newNode->next)->prev = newNode;
-                *curPtr = newNode;
-        }
-        return 0;
+//вывод элемента стека
+int pop(Stek **head)
+{
+	printf("Voshli v pop\n\r");
+	if (*head == NULL)
+	{
+		printf("Стек пуст\n\r");
+	}
+	else if (((*head)->prev) == *head)
+	{
+	    printf("%s\n\r", &((*head)->info));
+	    free(*head);
+	    *head = NULL;
+	   	printf("Вывели первый элемент из списка\n");
+	}
+	else
+	{
+	    Stek *cur = *head;
+	    (cur->prev)->next = cur->next;
+	    (cur->next)->prev = cur->prev;
+	    printf("%s\n\r", &(cur->info));
+	    *head = cur->prev;
+	    free(cur);
+	    printf("Вывели последний из списка\n");
+	}
+
 }
 
-int pop(Node **curPtr) {
-        if (*curPtr == NULL){
-                printf("List is empty!!!\n\r");
-        }else if (((*curPtr)->prev) == *curPtr){
-                printf("%s\n\r", (*curPtr)->data);
-                free(*curPtr);
-                *curPtr = NULL;
-        }else{
-                Node *cur = *curPtr;
-                (cur->prev)->next = cur->next;
-                (cur->next)->prev = cur->prev;
-                printf("%s\n\r", cur->data);
-                *curPtr = cur->prev;
-                free(cur);
-        }
-        return 0;
+//вывод листа
+void printLinkedList(Stek** head)
+{
+    Stek *cur = *head;
+    int length = 0;
+    if(*head == NULL)
+    {
+        printf("Список пуст\n\r");
+    }
+    else
+    {
+    	printf("-Вывод списка-\n");
+        printf("Элементы:\n");
+        do
+        {
+            printf("%s\n\r", &((*head)->info));
+            length++;
+            *head = (*head)->next;
+        }   while (*head != cur);
+        printf("Длина списка: %d\n\r", length);
+    }
 }
 
-int list(Node **curPtr, int *listLengthPtr){
-        Node *startPtr = *curPtr;
-        *listLengthPtr = 0;
-        if(*curPtr == NULL){
-                printf("List is empty!!!\n\r");
-        }else{
-                printf("Current: ");
-                do{
-                        printf("%s\n\r", (*curPtr)->data);
-                        (*listLengthPtr)++;
-                        *curPtr = (*curPtr)->next;
-                }while (*curPtr != startPtr);
-        }
-        printf("List length: %d\n\r", *listLengthPtr);
-        return 0;
-}
+int main() {
+	setlocale(LC_ALL, "Rus");
+	Stek* stekptr = NULL;
+	char command[5];
+	char* inInfo = (char*)malloc(sizeof(char)*20);
+	while (1)
+	{
+		printf("Введите команду push/pop или list\n");
+		scanf("%s", command);
+		if (command[1] == 'u')
+		{
+			printf("Введите через проблем имя и номер: ");
+			scanf("%s", &inInfo);
+			push(&stekptr, inInfo);
+		}
+		else if (command[1] == 'o')
+		{
+			pop(&stekptr);
+		}
+		else if (command[1] == 'i')
+		{
+			printLinkedList(&stekptr);
+		}
+		else if (command[1] == 'x')
+		{
+			break;
+		}
+	}
 
-int prev(Node **curPtr){
-        if (*curPtr == NULL){
-                printf("List is empty!!!\n\r");
-        }else{
-                *curPtr = (*curPtr)->prev;
-                printf("%s\n\r", (*curPtr)->data);
-        }
-        return 0;
-}
-
-int next(Node **curPtr){
-        if (*curPtr == NULL){
-                printf("List is empty!!!\n\r");
-        }else{
-                *curPtr = (*curPtr)->next;
-                printf("%s\n\r", (*curPtr)->data);
-        }
-        return 0;
-}
-
-int exit_ringlist(Node **curPtr){
-        if (*curPtr != NULL){
-                if (((*curPtr)->prev) == *curPtr){
-                        free(*curPtr);
-                }else{
-                        Node *cur = NULL;
-                        do{
-                                cur = *curPtr;
-                                *curPtr = (*curPtr)->next;
-                                (cur->prev)->next = cur->next;
-                                (cur->next)->prev = cur->prev;
-                                free(cur);
-                        }while(cur != *curPtr);
-                }
-        }
-        return 1;
-}
-
-int main () {
-        Node *currentListPtr = NULL;
-        int doProgram = 0;
-        int choosedParameter = 6;
-        int listLength = 0;
-        while(doProgram == 0){
-                showMenu(&choosedParameter);
-                printf("\n\r");
-                switch(choosedParameter) {
-                        case 1:
-                                {
-                                doProgram = push(&currentListPtr);
-                                break;
-                                }
-                        case 2:
-                                {
-                                doProgram = pop(&currentListPtr);
-                                break;
-                                }
-                        case 3:
-                                {
-                                doProgram = list(&currentListPtr, &listLength);
-                                break;
-                                }
-                        case 4:
-                                {
-                                doProgram = prev(&currentListPtr);
-                                break;
-                                }
-                        case 5:
-                                {
-                                doProgram = next(&currentListPtr);
-                                break;
-                                }
-                        case 6:
-                                {
-                                doProgram = exit_ringlist(&currentListPtr);
-                                break;
-                                }
-                        default:
-                                printf("Invalid entered menu option. It should be 1-6...\n\r");
-                }
-        }
-        return 0;
 }
