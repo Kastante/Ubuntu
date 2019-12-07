@@ -40,15 +40,26 @@ void heapSort(int* heap, int size, int length)
 	printf("Ход выполнения:\n");
 	while (size > 0)
 	{
-		for (int i = (size / 2) - 1; i >= 0; i--)	// Перетаскивание вершины
-			inTop(heap, i, size);
+		if (int i = (size % 2) != 0)
+		{
+			for (int i = (size / 2); i >= 0; i--)	// Перетаскивание вершины
+				inTop(heap, i, size);
+		}
+		else
+		{
+			for (int i = (size / 2) - 1; i >= 0; i--)// Перетаскивание вершины
+				inTop(heap, i, size);
+		}
 
 		printf("%d. ", count);
-		heapVis(length, heap);
+		heapVis(size + 1, heap);
 		printf("\n");
 
 		if (heap[0] > heap[size])					// Исключение залипания при size = 1, когда heap[0] < heap [size]
+		{
+			printf("   Swap: %d <-> %d\n", heap[0], heap[size]);
 			swap(heap, 0, size);
+		}
 		size--;
 		count++;
 	}
