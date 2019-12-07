@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <locale.h>
-
 
 //создание структуры
 typedef struct Stek		//структура Стек
@@ -86,21 +84,7 @@ void printLinkedList(Stek** head)
     }
 }
 
-//вывод элемента с информацией
-void printOnes(Stek** head)
-{
-    char Ones;
-    printf("Введите информацию из ячейки:\n\r");
-    scanf("%s\n\r", Ones);
-    while (((*head)->info) != Ones)
-    {
-        *head = (*head)->next;
-    }
-    printf("%s\n\r", (*head)->info);
-}
-
 int main() {
-	setlocale(LC_ALL, "Rus");
 	Stek* stekptr = NULL;
 	char command[5];
 	char* inInfo = (char*)malloc(sizeof(char)*20);
@@ -121,10 +105,6 @@ int main() {
 		else if (command[1] == 'i')
 		{
 			printLinkedList(&stekptr);
-		}
-		else if (command[1] == 'e')
-		{
-		    printOnes(&stekptr);
 		}
 		else if (command[1] == 'x')
 		{
