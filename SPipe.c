@@ -49,6 +49,22 @@ void vissummass(int mass[10][10])
 	printf("%d ", d);
 }
 
+//проверка поля
+void scan(char* buf, int mass[10][10], int counter)
+{
+	int i = buf[0];
+	int j = buf[1];
+	if (mass[i][j] == 1) {
+		printf("Попадание! %d %d\n", i, j);
+		mass[i][j] = 0;
+		counter--;
+		printf("counter = %d\n", counter);
+	}
+	if (counter == 0) {
+		printf("Противников больше не осталось. Победа за 1м");
+	}
+}
+
 //массив условий
 void condit(int cond[])
 {
@@ -136,24 +152,6 @@ int input(int mass[10][10], int counter)
 
 	return 1;
 }
-
-//проверка поля
-void scan(char* buf, int mass[10][10], int counter)
-{	
-	int i = buf[0];
-	int j = buf[1];
-	if (mass[i][j] == 1) {
-		printf("Попадание! %d %d\n", i, j);
-		mass[i][j] = 0;
-		counter--;
-		printf("counter = %d\n", counter);
-	}
-	if (counter == 0) {
-		printf("Противников больше не осталось. Победа за 1м");
-	}
-}
-
-
 
 int main() {
 	int cond[10];					//массив условий
