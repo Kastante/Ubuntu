@@ -5,11 +5,17 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+struct sigaction sa;
+
 int sigInput(int* inputPtr){
         printf("Input signal number(1-31):\n\r>>");
         scanf("%d", inputPtr);
         if (*inputPtr>=1 && *inputPtr<=31) return 0;
-        else return 1;
+        else{ 
+        printf("There's only 31 signals in total!\n\r");
+        raise(SIGTERM);
+        return 1;
+        }
 }
 
 void sigHandler(int sigNum){
@@ -123,7 +129,7 @@ int sigCatcher(void){
         if (signal(SIGPIPE, sigHandler) == SIG_ERR){
                 printf("Can't catch the signal SIGPIPE(13)!!!\n\r");
         }
-        if (signal(SIGALRM, sigHandler) == SIG_ERR){
+        if (sigaction(SIGALRM, &sa, 0) == -1){
                 printf("Can't catch the signal SIGALRM(14)!!!\n\r");
         }
         if (signal(SIGTERM, sigHandler) == SIG_ERR){
@@ -182,6 +188,12 @@ int sigCatcher(void){
 }
 
 int main(void){
+    struct sigaction sa;
+    sigset_t newset;
+    sigemptyset(&newset);
+    sigaddset(&newset, SIGALRM);
+    sigprocmask(SIG_BLOCK, &newset, 0);
+    sa.sa_handler = sigHandler;
 	pid_t sigPid;
         int* sigPtr=malloc(sizeof(int));
         while(sigInput(sigPtr));
@@ -198,12 +210,12 @@ int main(void){
 	    sleep(1);
 	    printf("Parent sends signal number %d to child...\n\r", *sigPtr);
             kill(sigPid, *sigPtr);
-	    printf("Parent wait 1s for fun...\n\r");
+	    printf("Parent waits\n\r");
 	    sleep(1);
             if (*sigPtr != 9){
-                printf("Parent additionally brutally kills child for good complete of program...\n\r");
+                printf("Parent additionally kills child program...\n\r");
 		kill(sigPid, 9);
-            }else printf("Parent additionally brutally kills no required\n\r");
+            }else printf("Additionall kill is not required\n\r");
         }
         return 0;
 }
