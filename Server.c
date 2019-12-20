@@ -1,32 +1,19 @@
-int main(int argc, const char * argv[]) {
-    int myPipeC = open("myPipeC", O_RDWR);
-    int myPipeS = open("myPipeS",O_RDWR);
-    pid_t cpid;
-    char buf[255];
-    char send[255];
-    int n;
-    int saveIn = dup(fileno(stdin));
-    int saveOut = dup(fileno(stdout));
-    while(1) {
-        if ((cpid = fork()) == 0 ) {
-            while(1){
-                while((n=read(myPipeS,&buf,255)) > 0){
-                     write(fileno(stdout), &buf, n*sizeof(char));
-                }
-            }
-        } else {
-            while(1){
-                fgets(send, 255,stdin);
-                int len = strlen(send);
-                write(myPipeC,send,(len+1)*sizeof(char));
-            }
-        }
-    }
-    close(myPipeC);
-    close(myPipeS);
-    fflush(stdin);
-    fflush(stdout);
-    dup2(saveIn,fileno(stdin));
-    dup2(saveOut, fileno(stdout));
-    exit(EXIT_SUCCESS);
-} 
+import socket
+
+TCP_IP = '127.0.0.1'
+TCP_PORT = 5005
+BUFFER_SIZE = 20  # Normally 1024, but we want fast response
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((TCP_IP, TCP_PORT))
+s.listen(1)
+
+conn, addr = s.accept()
+print("Connection address: {}".format(addr))
+while 1:
+    data = conn.recv(BUFFER_SIZE)
+    if not data:
+        break
+    print("received data: {}".format(data))
+    conn.send(data)  # echo
+conn.close()
