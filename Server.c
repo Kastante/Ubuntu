@@ -1,50 +1,41 @@
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string.h>
+#include <sys/types.h>
+#include <time.h> 
 
-int main()
-{
-    int sock, listener;
-    struct sockaddr_in addr;
-    char buf[1024];
-    int bytes_read;
+int main(int argc, char *argv[]) {
+    int listenfd = 0, connfd = 0;
+    struct sockaddr_in serv_addr;
 
-    listener = socket(AF_INET, SOCK_STREAM, 0);
-    if(listener < 0)
-    {
-        perror("socket");
-        exit(1);
-    }
-    
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(3425);
-    addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    if(bind(listener, (struct sockaddr *)&addr, sizeof(addr)) < 0)
-    {
-        perror("bind");
-        exit(2);
-    }
+    char sendBuff[1025];
+    time_t ticks;
 
-    listen(listener, 1);
-    
-    while(1)
-    {
-        sock = accept(listener, NULL, NULL);
-        if(sock < 0)
-        {
-            perror("accept");
-            exit(3);
-        }
+    listenfd = socket(AF_INET, SOCK_STREAM, 0);
+    memset(&serv_addr, '0', sizeof(serv_addr));
+    memset(sendBuff, '0', sizeof(sendBuff));
 
-        while(1)
-        {
-            bytes_read = recv(sock, buf, 1024, 0);
-            if(bytes_read <= 0) break;
-            send(sock, buf, bytes_read, 0);
-        }
-    
-        close(sock);
-    }
-    
-    return 0;
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    serv_addr.sin_port = htons(5000);
+
+    bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
+
+    listen(listenfd, 10);
+
+    while(1) {
+        connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
+                                                                                                                                                                              
+        ticks = time(NULL);
+        snprintf(sendBuff, sizeof(sendBuff), "%.24s\r\n", ctime(&ticks))
+        write(connfd, sendBuff, strlen(sendBuff));
+
+        close(connfd);
+        sleep(1);
+     }
 }
