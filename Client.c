@@ -1,39 +1,14 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <string.h>
-#include <errno.h>
+import socket
 
-int main(int argc, const char * argv[]) {
-    int myPipeC = open("myPipeC", O_RDWR);
-    int myPipeS = open("myPipeS",O_RDWR);
-    pid_t cpid;
-    char buf[255];
-    char send[255];
-    int n;
-    int saveIn = dup(fileno(stdin));
-    int saveOut = dup(fileno(stdout));
-    while(1) {
-        if ((cpid = fork()) == 0 ) {
-            while(1){
-                while((n=read(myPipeC,&buf,255)) > 0){
-                    write(fileno(stdout), &buf, n*sizeof(char));
-                }
-            }
-        } else {
-            while(1){
-                fgets(send, 255,stdin);
-                int len = strlen(send);
-                write(myPipeS,send,(len+1)*sizeof(char));
-            }
-        }
-    }
-    close(myPipeC);
-    close(myPipeS);
-    fflush(stdin);
-    fflush(stdout);
-    dup2(saveIn,fileno(stdin));
-    dup2(saveOut, fileno(stdout));
-    exit(EXIT_SUCCESS);
-} 
+TCP_IP = '127.0.0.1'
+TCP_PORT = 5005
+BUFFER_SIZE = 1024
+MESSAGE = b'Hello, World!'
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((TCP_IP, TCP_PORT))
+s.send(MESSAGE)
+data = s.recv(BUFFER_SIZE)
+s.close()
+
+print("received data: {}".format(data))
