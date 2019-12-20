@@ -1,14 +1,36 @@
-import socket
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 
-TCP_IP = '127.0.0.1'
-TCP_PORT = 5005
-BUFFER_SIZE = 1024
-MESSAGE = b'Hello, World!'
+char message[] = "Hello there!\n";
+char buf[sizeof(message)];
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((TCP_IP, TCP_PORT))
-s.send(MESSAGE)
-data = s.recv(BUFFER_SIZE)
-s.close()
+int main()
+{
+    int sock;
+    struct sockaddr_in addr;
 
-print("received data: {}".format(data))
+    sock = socket(AF_INET, SOCK_STREAM, 0);
+    if(sock < 0)
+    {
+        perror("socket");
+        exit(1);
+    }
+
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(3425); // или любой другой порт...
+    addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+    if(connect(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
+    {
+        perror("connect");
+        exit(2);
+    }
+
+    send(sock, message, sizeof(message), 0);
+    recv(sock, buf, sizeof(message), 0);
+    
+    printf(buf);
+    close(sock);
+
+    return 0;
+}
