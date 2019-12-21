@@ -14,37 +14,37 @@ struct sigaction sa;
 
 void sigHandler(int sigNum) {
     printf("-----------------\n\rHandler starts...\n\r");
-    if (sigNum == SIGHUP)       printf("Получено SIGHUP(1)\n\r");
-    if (sigNum == SIGINT)       printf("Получено SIGINT(2)\n\r");
-    if (sigNum == SIGQUIT)      printf("Получено SIGQUIT(3)\n\r");
-    if (sigNum == SIGILL)       printf("Получено SIGILL(4)\n\r");
-    if (sigNum == SIGTRAP)      printf("Получено SIGTRAP(5)\n\r");
-    if (sigNum == SIGABRT)      printf("Получено SIGABRT(6)\n\r");
-    if (sigNum == SIGBUS)       printf("Получено SIGBUS(7)\n\r");
-    if (sigNum == SIGFPE)       printf("Получено SIGFPE(8)\n\r");
-    if (sigNum == SIGKILL)      printf("Получено SIGKILL(9)\n\r");
-    if (sigNum == SIGUSR1)      printf("Получено SIGUSR1(10)\n\r");
-    if (sigNum == SIGSEGV)      printf("Получено SIGSEGV(11)\n\r");
-    if (sigNum == SIGUSR2)      printf("Получено SIGUSR2(12)\n\r");
-    if (sigNum == SIGPIPE)      printf("Получено SIGPIPE(13)\n\r");
-    if (sigNum == SIGALRM)      printf("Получено SIGALRM(14)\n\r");
-    if (sigNum == SIGTERM)      printf("Получено SIGTERM(15)\n\r");
-    if (sigNum == SIGSTKFLT)    printf("Получено SIGSTKFLT(16)\n\r");
-    if (sigNum == SIGCHLD)      printf("Получено SIGCHLD(17)\n\r");
-    if (sigNum == SIGCONT)      printf("Получено SIGCONT(18)\n\r");
-    if (sigNum == SIGSTOP)      printf("Получено SIGSTOP(19)\n\r");
-    if (sigNum == SIGTSTP)      printf("Получено SIGTSTP(20)\n\r");
-    if (sigNum == SIGTTIN)      printf("Получено SIGTTIN(21)\n\r");
-    if (sigNum == SIGTTOU)      printf("Получено SIGTTOU(22)\n\r");
-    if (sigNum == SIGURG)       printf("Получено SIGURG(23)\n\r");
-    if (sigNum == SIGXCPU)      printf("Получено SIGXCPU(24)\n\r");
-    if (sigNum == SIGXFSZ)      printf("Получено SIGXFSZ(25)\n\r");
-    if (sigNum == SIGVTALRM)    printf("Получено SIGVTALRM(26)\n\r");
-    if (sigNum == SIGPROF)      printf("Получено SIGPROF(27)\n\r");
-    if (sigNum == SIGWINCH)     printf("Получено SIGWINCH(28)\n\r");
-    if (sigNum == SIGIO)        printf("Получено SIGIO(29)\n\r");
-    if (sigNum == SIGPWR)       printf("Получено SIGPWR(30)\n\r");
-    if (sigNum == SIGSYS)       printf("Получено SIGSYS(31)\n\r");
+    if (sigNum == SIGHUP)       printf("Получено %sSIGHUP%s%s(1)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGINT)       printf("Получено %sSIGINT%s%s(2)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGQUIT)      printf("Получено %sSIGQUIT%s%s(3)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGILL)       printf("Получено %sSIGILL%s%s(4)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGTRAP)      printf("Получено %sSIGTRAP%s%s(5)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGABRT)      printf("Получено %sSIGABRT%s%s(6)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGBUS)       printf("Получено %sSIGBUS%s%s(7)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGFPE)       printf("Получено %sSIGFPE%s%s(8)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGKILL)      printf("Получено %sSIGKILL%s%s(9)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGUSR1)      printf("Получено %sSIGUSR1%s%s(10)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGSEGV)      printf("Получено %sSIGSEGV%s%s(11)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGUSR2)      printf("Получено %sSIGUSR2%s%s(12)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGPIPE)      printf("Получено %sSIGPIPE%s%s(13)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGALRM)      printf("Получено %sSIGALRM%s%s(14)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGTERM)      printf("Получено %sSIGTERM%s%s(15)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGSTKFLT)    printf("Получено %sSIGSTKFLT%s%s(16)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGCHLD)      printf("Получено %sSIGCHLD%s%s(17)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGCONT)      printf("Получено %sSIGCONT%s%s(18)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGSTOP)      printf("Получено %sSIGSTOP%s%s(19)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGTSTP)      printf("Получено %sSIGTSTP%s%s(20)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGTTIN)      printf("Получено %sSIGTTIN%s%s(21)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGTTOU)      printf("Получено %sSIGTTOU%s%s(22)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGURG)       printf("Получено %sSIGURG%s%s(23)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGXCPU)      printf("Получено %sSIGXCPU%s%s(24)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGXFSZ)      printf("Получено %sSIGXFSZ%s%s(25)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGVTALRM)    printf("Получено %sSIGVTALRM%s%s(26)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGPROF)      printf("Получено %sSIGPROF%s%s(27)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGWINCH)     printf("Получено %sSIGWINCH%s%s(28)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGIO)        printf("Получено %sSIGIO%s%s(29)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGPWR)       printf("Получено %sSIGPWR%s%s(30)%s\n\r", YELLOW, RESET, RED, RESET);
+    if (sigNum == SIGSYS)       printf("Получено %sSIGSYS%s%s(31)%s\n\r", YELLOW, RESET, RED, RESET);
     printf("Handler ends...\n\r---------------\n\r");
 }
 
@@ -94,30 +94,30 @@ int main(void) {
     sa.sa_handler = sigHandler;				//объявление обработчика
     pid_t sigPid;
     int sigPtr = 0;
-	for (int i = 1; i < 31; i++) {
-		sigPtr ++;
+    for (int i = 1; i < 31; i++) {
+        sigPtr++;
 
-		if ((sigPid = fork()) == 0) {
-       		printf("Дочка создана...\n\r");
-        	if ((int)sigPid == 0) {
-            	sigCatcher();
-       		}
-        while (1);
-    	}
-   		else {
-			sleep(1);
-        	printf("Parent sends signal number %d to child...\n\r", sigPtr);
-		    kill(sigPid, sigPtr);
-       		printf("Parent waits\n\r");
-        	sleep(1);
-			printf("\n\n\r");
-		}
-/*        if (*sigPtr != 9) {
-            printf("Parent additionally kills child program...\n\r");
-            kill(sigPid, 9);
+        if ((sigPid = fork()) == 0) {
+            printf("Дочка создана...\n\r");
+            if ((int)sigPid == 0) {
+                sigCatcher();
+            }
+            while (1);
         }
-        else printf("Additionall kill is not required\n\r");
-*/
-	}
+        else {
+            sleep(1);
+            printf("Parent sends signal number %d to child...\n\r", sigPtr);
+            kill(sigPid, sigPtr);
+            printf("Parent waits\n\r");
+            sleep(2);
+            printf("\n\n\r");
+        }
+        /*        if (*sigPtr != 9) {
+                    printf("Parent additionally kills child program...\n\r");
+                    kill(sigPid, 9);
+                }
+                else printf("Additionall kill is not required\n\r");
+        */
+    }
     return 0;
 }
