@@ -5,18 +5,12 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-struct sigaction sa;
+#define RESET	"\033[0m"
+#define RED		"\033[1;31m"
+#define YELLOW	"\033[1:33m"
+#define WHITE	"\033[1:37m"
 
-int sigInput(int* inputPtr) {
-    printf("Input signal number(1-31):\n\r>>");
-    scanf("%d", inputPtr);
-    if (*inputPtr >= 1 && *inputPtr <= 31) return 0;
-    else {
-        printf("There's only 31 signals in total!\n\r");
-        raise(SIGTERM);
-        return 1;
-    }
-}
+struct sigaction sa;
 
 void sigHandler(int sigNum) {
     printf("-----------------\n\rHandler starts...\n\r");
@@ -92,36 +86,38 @@ int sigCatcher(void) {
 }
 
 int main(void) {
-    struct sigaction sa;
-    sigset_t newset;
-    sigemptyset(&newset);
-    sigaddset(&newset, SIGALRM);
-    sigprocmask(SIG_BLOCK, &newset, 0);
-    sa.sa_handler = sigHandler;
+    struct sigaction sa;					//объявление структуры sigaction
+    sigset_t newset;						//объявление новой группы сигналов
+    sigemptyset(&newset);					//инициализация группы newset
+    sigaddset(&newset, SIGALRM);			//добавление сигнала SIGALRM в группу newset
+    sigprocmask(SIG_BLOCK, &newset, 0);		//настройка группы newset - блокировка
+    sa.sa_handler = sigHandler;				//объявление обработчика
     pid_t sigPid;
-    int* sigPtr = malloc(sizeof(int));
-    while (sigInput(sigPtr));
-    printf("Parent acquired signal number...\n\r");
-    printf("Parent starts fork...\n\r");
-    if ((sigPid = fork()) == 0) {
-        printf("Child was forked...\n\r");
-        if ((int)sigPid == 0) {
-            sigCatcher();
-        }
+    int sigPtr = 0;
+	for (int i = 1; i < 31; i++) {
+		sigPtr ++;
+
+		if ((sigPid = fork()) == 0) {
+       		printf("Дочка создана...\n\r");
+        	if ((int)sigPid == 0) {
+            	sigCatcher();
+       		}
         while (1);
-    }
-    else {
-        printf("Parent wait 1s for fun...\n\r");
-        sleep(1);
-        printf("Parent sends signal number %d to child...\n\r", *sigPtr);
-        kill(sigPid, *sigPtr);
-        printf("Parent waits\n\r");
-        sleep(1);
-        if (*sigPtr != 9) {
+    	}
+   		else {
+			sleep(1);
+        	printf("Parent sends signal number %d to child...\n\r", sigPtr);
+		    kill(sigPid, sigPtr);
+       		printf("Parent waits\n\r");
+        	sleep(1);
+			printf("\n\n\r");
+		}
+/*        if (*sigPtr != 9) {
             printf("Parent additionally kills child program...\n\r");
             kill(sigPid, 9);
         }
         else printf("Additionall kill is not required\n\r");
-    }
+*/
+	}
     return 0;
 }
