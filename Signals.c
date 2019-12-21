@@ -94,7 +94,7 @@ int main(void) {
     sa.sa_handler = sigHandler;				//объявление обработчика
     pid_t sigPid;
     int sigPtr = 0;
-    for (int i = 1; i < 31; i++) {
+    while (sigPtr <=30) {
         sigPtr++;
 
         if ((sigPid = fork()) == 0) {
@@ -112,12 +112,7 @@ int main(void) {
             sleep(2);
             printf("\n\n\r");
         }
-        /*        if (*sigPtr != 9) {
-                    printf("Parent additionally kills child program...\n\r");
-                    kill(sigPid, 9);
-                }
-                else printf("Additionall kill is not required\n\r");
-        */
+
     }
     return 0;
 }
