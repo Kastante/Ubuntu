@@ -13,12 +13,12 @@ int main(int argc, char *argv[]) {
     int sockfd = 0, n = 0;
     char recvBuff[1024];
     struct sockaddr_in serv_addr;
-
+	int end = 0;
     if(argc != 2) {
         printf("\n Usage: %s <ip of server> \n",argv[0]);
         return 1;
     }
-
+while (end == 0){
     memset(recvBuff, '0',sizeof(recvBuff));
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
@@ -43,9 +43,9 @@ int main(int argc, char *argv[]) {
        return 1;
     }
 
-    while ( (n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0)
-    {
-        recvBuff[n] = 0;
+n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
+
+		recvBuff[n] = 0;
         if(fputs(recvBuff, stdout) == EOF)
         {
             printf("\n Error : Fputs error\n");
@@ -56,6 +56,6 @@ int main(int argc, char *argv[]) {
     {
         printf("\n Read error \n");
     }
-
+sleep(1);
     return 0;
 }
