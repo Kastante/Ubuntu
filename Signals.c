@@ -53,10 +53,10 @@ int sigCatcher(void) {
     if (signal(SIGHUP, sigHandler) == SIG_ERR)       printf("Не получилось поймать сигнал SIGHUP(1)!!!\n\r");
     if (signal(SIGINT, sigHandler) == SIG_ERR)       printf("Не получилось поймать сигнал SIGINT(2)!!!\n\r");
     if (signal(SIGQUIT, sigHandler) == SIG_ERR)      printf("Не получилось поймать сигнал SIGQUIT(3)!!!\n\r");
-    if (signal(SIGILL, sigHandler) == SIG_ERR)       printf("Не получилось поймать сигнал SIGILL(4)!!!\n\r");
+    if (sigaction(SIGILL, &sa, 0) == -1)             printf("Не получилось поймать сигнал SIGILL(4)!!!\n\r");
     if (signal(SIGTRAP, sigHandler) == SIG_ERR)      printf("Не получилось поймать сигнал SIGTRAP(5)!!!\n\r");
     if (signal(SIGABRT, sigHandler) == SIG_ERR)      printf("Не получилось поймать сигнал SIGABRT(6)!!!\n\r");
-    if (signal(SIGBUS, sigHandler) == SIG_ERR)       printf("Не получилось поймать сигнал SIGBUS(7)!!!\n\r");
+    if (sigaction(SIGBUS, &sa, 0) == -1)             printf("Не получилось поймать сигнал SIGBUS(7)!!!\n\r");
     if (signal(SIGFPE, sigHandler) == SIG_ERR)       printf("Не получилось поймать сигнал SIGFPE(8)!!!\n\r");
     if (signal(SIGKILL, sigHandler) == SIG_ERR)      printf("Не получилось поймать сигнал SIGKILL(9) (by design in linux)!!!\n\r");
     if (signal(SIGUSR1, sigHandler) == SIG_ERR)      printf("Не получилось поймать сигнал SIGUSR1(10)!!!\n\r");
@@ -94,7 +94,7 @@ int main(void) {
     sa.sa_handler = sigHandler;				//объявление обработчика
     pid_t sigPid;
     int sigPtr = 0;
-    for (int i = 1; i < 31; i++) {
+    while (sigPtr <=30) {
         sigPtr++;
 
         if ((sigPid = fork()) == 0) {
@@ -112,12 +112,7 @@ int main(void) {
             sleep(2);
             printf("\n\n\r");
         }
-        /*        if (*sigPtr != 9) {
-                    printf("Parent additionally kills child program...\n\r");
-                    kill(sigPid, 9);
-                }
-                else printf("Additionall kill is not required\n\r");
-        */
+
     }
     return 0;
 }
