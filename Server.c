@@ -30,9 +30,8 @@ int main(int argc, char *argv[]) {
 
     while(1) {
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
-                                                                                                                                                                              
         ticks = time(NULL);
-        snprintf(sendBuff, sizeof(sendBuff), "%.24s\r\n", ctime(&ticks))
+        snprintf(sendBuff, sizeof(sendBuff), "%.24s\r\n", ctime(&ticks));
         write(connfd, sendBuff, strlen(sendBuff));
 
         close(connfd);
